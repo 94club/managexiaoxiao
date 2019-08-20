@@ -4,16 +4,21 @@
   </div>
 </template>
 <script>
-import constant from '../utils/constant'
+// import constant from '../utils/constant'
+// import axios from 'axios'
 export default {
   methods: {
     logout () {
-      this.$axios.post(constant.logout).then((res) => {
-        if (res === '退出成功') {
-          this.$router.replace({ path: '/login' })
-          this.$store.dispatch('updateUserInfo', '')
-        }
-      })
+      // axios({
+      //   url: constant.baseUrl + constant.queryCaseByWhere,
+      //   data: qs.stringify(this.form),
+      //   method: 'post'
+      // }).then((res) => {
+      //   if (res === 0) {
+      //     this.$router.replace({ path: '/login' })
+      //     this.$store.dispatch('updateUserInfo', '')
+      //   }
+      // })
     }
   }
 }

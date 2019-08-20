@@ -1,15 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Member from './views/Member.vue'
-import Page from './views/Page.vue'
-import Record from './views/Record.vue'
+import workOrderList from './views/workOrderList.vue'
+import checkList from './views/checkList.vue'
+import TaskList from './views/TaskList.vue'
 import Login from './views/Login.vue'
 import NotFound from './views/404.vue'
 
 Vue.use(Router)
 const router = new Router({
-  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -24,15 +23,15 @@ const router = new Router({
       children: [
         {
           path: 'taskList',
-          component: Record
+          component: TaskList
         },
         {
           path: 'workOrderList',
-          component: Member
+          component: workOrderList
         },
         {
           path: 'checkList',
-          component: Page
+          component: checkList
         }
       ]
     },
