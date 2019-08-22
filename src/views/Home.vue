@@ -1,17 +1,22 @@
 <template>
   <div class="blt-container">
-    <blt-aside></blt-aside>
-    <blt-main></blt-main>
+    <blt-header></blt-header>
+    <div class="blt-bot">
+      <blt-aside></blt-aside>
+      <blt-main></blt-main>
+    </div>
   </div>
 </template>
 
 <script>
+import BltHeader from '../components/BltHeader'
 import BltAside from '../components/BltAside'
 import BltMain from '../components/BltMain'
 export default {
   components: {
     BltAside,
-    BltMain
+    BltMain,
+    BltHeader
   },
   created () {
     let userInfo = JSON.parse(localStorage.getItem('userInfo'))
@@ -31,8 +36,13 @@ export default {
   height: 100%;
   width:100%;
   display: flex;
-}
-.blt-main {
-  background: #999;
+  flex-direction: column;
+  // .blt-top{
+  //   height: 50px;
+  // }
+  .blt-bot{
+    flex: 1;
+    display: flex;
+  }
 }
 </style>

@@ -1,29 +1,37 @@
 <template>
   <div class="blt-aside">
-    <el-row class="tac">
-      <el-col>
-        <h5>国寿总控后台</h5>
+    <!-- <el-row class="tac">
+      <el-col> -->
         <el-menu
           v-show="routerArr.length > 0"
           :defaultActive="defaultActive"
+          :collapse="isCollapse"
+          collapse-transition
           class="el-menu-vertical-demo"
           @open="handleOpen"
           @close="handleClose"
-          background-color="#545c64"
+          background-color="#2d353c"
           text-color="#fff"
-          active-text-color="#ffd04b"
+          active-text-color="#019858"
           router
         >
           <el-submenu :index="item.index" v-for="(item, routeIndex) in routerArr" :key="routeIndex">
               <template slot="title" v-if="item.title">
-                <i class="el-icon-location"></i>
+                <span class="iconfont" :class="'icon-'+item.icon"></span>
                 <span>{{item.title}}</span>
               </template>
-              <el-menu-item v-for="secondMenuItem in item.menuItems" :key="secondMenuItem.title" :index="secondMenuItem.index">{{secondMenuItem.title}}</el-menu-item>
+              <el-menu-item v-for="secondMenuItem in item.menuItems" :key="secondMenuItem.title" :index="secondMenuItem.index">
+                <i class="iconfont" :class="'icon-'+secondMenuItem.icon"></i>
+                {{secondMenuItem.title}}
+              </el-menu-item>
           </el-submenu>
         </el-menu>
-      </el-col>
-    </el-row>
+      <!-- </el-col>
+    </el-row> -->
+    <div  class="is-zhankai" @click='changeZhan'>
+     <div class="left"></div>
+     <div class="right">{{isCollapse?'&lt;&lt;':'&gt;&gt;'}}</div>
+    </div>
   </div>
 </template>
 <script>
@@ -31,7 +39,8 @@ import constant from '../utils/constant'
 export default {
   data () {
     return {
-      routerArr: constant.routerArr
+      routerArr: constant.routerArr,
+      isCollapse: false
     }
   },
   computed: {
@@ -59,6 +68,9 @@ export default {
     }
   },
   methods: {
+    changeZhan () {
+      this.isCollapse = !this.isCollapse
+    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
@@ -70,11 +82,52 @@ export default {
 </script>
 <style lang="scss">
 .blt-aside {
-  width: 200px;
-  background: #666;
+  position: relative;
+  min-width: 200px;
+  background:rgba(45,53,60,1);
   overflow: auto;
+  display: block;
+  transition: all .5s;
   .el-menu {
     border: none
   }
+}
+.hide{
+  background-color: transparent !important;
+  display: none;
+  transition: all .5s;
+}
+.is-zhankai{
+  position:absolute;
+  bottom:50px;
+  right:0;
+  width:90px;
+  height:30px;
+  display: flex;
+  justify-content: space-between;
+  .left{
+    width:40px;
+    height:30px;
+    background:rgba(74,74,82,1);
+    border-radius:15px 0px 0px 15px;
+  }
+  .right{
+    width:40px;
+    height:30px;
+    background:rgba(26,33,39,1);
+    border-radius:15px 0px 0px 15px;
+    color:#fff;
+    line-height: 30px;
+    font-size:16px;
+    text-align: center;
+  }
+}
+.top-0{
+  bottom:50px;
+  left:0;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
 }
 </style>

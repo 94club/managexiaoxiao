@@ -210,7 +210,7 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     &:focus {
-      border-color: #3dcb91;
+      border-color: #019858;
       outline: 0;
       box-shadow: 0 0 0 2px rgba(0, 186, 110, 0.2);
     }

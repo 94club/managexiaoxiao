@@ -1,16 +1,16 @@
 <template>
   <div class="blt-main">
-    <blt-header></blt-header>
     <div class="blt-main-content">
       <router-view />
     </div>
   </div>
 </template>
 <script>
-import BltHeader from './BltHeader'
 export default {
-  components: {
-    BltHeader
+  data () {
+    return {
+
+    }
   }
 }
 </script>
@@ -18,16 +18,15 @@ export default {
 <style lang="scss">
   .blt-main {
     flex: 1;
-    display: flex;
+    // display: flex;
     flex-direction: column;
-    &-header {
-      height: 60px;
-      background: #eee;
-    }
+    height: 100%;
+    background-color: #d9e0e7;
     &-content {
       flex:1;
+      height: 100%;
       overflow: auto;
-      background: #999
+      // background: #999;
     }
   }
 </style>
