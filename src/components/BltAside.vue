@@ -1,33 +1,51 @@
 <template>
-  <div class="blt-aside">
-    <!-- <el-row class="tac">
-      <el-col> -->
-        <el-menu
-          v-show="routerArr.length > 0"
-          :defaultActive="defaultActive"
-          :collapse="isCollapse"
-          collapse-transition
-          class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
-          background-color="#2d353c"
-          text-color="#fff"
-          active-text-color="#019858"
-          router
-        >
-          <el-submenu :index="item.index" v-for="(item, routeIndex) in routerArr" :key="routeIndex">
-              <template slot="title" v-if="item.title">
-                <span class="iconfont" :class="'icon-'+item.icon"></span>
-                <span>{{item.title}}</span>
-              </template>
-              <el-menu-item v-for="secondMenuItem in item.menuItems" :key="secondMenuItem.title" :index="secondMenuItem.index">
-                <i class="iconfont" :class="'icon-'+secondMenuItem.icon"></i>
-                {{secondMenuItem.title}}
-              </el-menu-item>
-          </el-submenu>
-        </el-menu>
-      <!-- </el-col>
-    </el-row> -->
+  <div class="blt-aside" :class="isCollapse? 'width64' : 'width200'">
+    <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+      <el-submenu index="1">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span slot="title">导航一</span>
+        </template>
+        <el-menu-item-group>
+          <span slot="title">分组一</span>
+          <el-menu-item index="1-1">选项1</el-menu-item>
+          <el-menu-item index="1-2">选项2</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group title="分组2">
+          <el-menu-item index="1-3">选项3</el-menu-item>
+        </el-menu-item-group>
+        <el-submenu index="1-4">
+          <span slot="title">选项4</span>
+          <el-menu-item index="1-4-1">选项1</el-menu-item>
+        </el-submenu>
+      </el-submenu>
+      <el-submenu index="2">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span slot="title">导航二</span>
+        </template>
+        <el-menu-item-group>
+          <span slot="title">分组二</span>
+          <el-menu-item index="2-1">选项1</el-menu-item>
+          <el-menu-item index="2-2">选项2</el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group title="分组2">
+          <el-menu-item index="2-3">选项3</el-menu-item>
+        </el-menu-item-group>
+        <el-submenu index="2-4">
+          <span slot="title">选项4</span>
+          <el-menu-item index="2-4-1">选项1</el-menu-item>
+        </el-submenu>
+      </el-submenu>
+      <el-menu-item index="3" disabled>
+        <i class="el-icon-document"></i>
+        <span slot="title">导航三</span>
+      </el-menu-item>
+      <el-menu-item index="4">
+        <i class="el-icon-setting"></i>
+        <span slot="title">导航四</span>
+      </el-menu-item>
+    </el-menu>
     <div  class="is-zhankai" @click='changeZhan'>
      <div class="left"></div>
      <div class="right">{{isCollapse?'&lt;&lt;':'&gt;&gt;'}}</div>
@@ -39,8 +57,7 @@ import constant from '../utils/constant'
 export default {
   data () {
     return {
-      routerArr: constant.routerArr,
-      isCollapse: false
+      routerArr: constant.routerArr
     }
   },
   computed: {
@@ -49,6 +66,9 @@ export default {
     },
     defaultActive () {
       return this.$route.path.substr(1)
+    },
+    isCollapse () {
+      return this.$store.state.isCollapse
     }
   },
   mounted () {
@@ -69,7 +89,7 @@ export default {
   },
   methods: {
     changeZhan () {
-      this.isCollapse = !this.isCollapse
+      this.$store.dispatch('updateIsCollapse', !this.isCollapse)
     },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
@@ -83,10 +103,11 @@ export default {
 <style lang="scss">
 .blt-aside {
   position: relative;
-  min-width: 200px;
+  width: 200px;
+  height: 100%;
+  float: left;
+  overflow: scroll;
   background:rgba(45,53,60,1);
-  overflow: auto;
-  display: block;
   transition: all .5s;
   .el-menu {
     border: none

@@ -138,7 +138,6 @@
 import constant from '../utils/constant'
 import axios from 'axios'
 import qs from 'qs'
-import { setTimeout } from 'timers';
 export default {
   data () {
     return {
@@ -190,18 +189,18 @@ export default {
       },
       tableData: [],
       currentPage: 1,
-      total:0,
-      tableDataInfo: '', //详细信息
+      total: 0,
+      tableDataInfo: '', // 详细信息
       multipleSelection: [] // 选择
     }
   },
   methods: {
-    handleClose(done) {
+    handleClose (done) {
       this.$confirm('确认关闭？')
         .then(_ => {
-          done();
+          done()
         })
-        .catch(_ => {});
+        .catch(_ => {})
     },
     lookInfo (val) {
       console.log(val)
@@ -213,7 +212,7 @@ export default {
     },
     search () {
       this.tableLoading = true
-      setTimeout(()=>{
+      setTimeout(() => {
         this.tableLoading = false
       }, 1000)
       if (this.timeValue && this.timeValue.length > 0) {
@@ -229,7 +228,7 @@ export default {
         this.tableData = res.data.data
         if (this.tableData) {
           console.log(this.tableData.length)
-          this.total= this.tableData.length
+          this.total = this.tableData.length
         }
       })
     },
@@ -306,5 +305,4 @@ export default {
       }
     }
   }
-
 </style>

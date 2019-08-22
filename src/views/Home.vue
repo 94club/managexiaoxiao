@@ -41,8 +41,8 @@ export default {
   //   height: 50px;
   // }
   .blt-bot{
-    flex: 1;
-    display: flex;
+    width: 100%;
+    height: calc(100% - 50px);
   }
 }
 </style>
