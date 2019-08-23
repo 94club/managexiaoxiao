@@ -98,9 +98,7 @@
            <el-table-column
             label="操作">
               <template slot-scope="scope">
-                <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                <el-button type="text" size="small">编辑</el-button> -->
-                <span @click="lookInfo(scope.row)" style='color:#019858'>查看</span>
+                <span @click="lookInfo(scope.row)" style='color:#019858;cursor:pointer'>查看</span>
               </template>
           </el-table-column>
         </el-table>
@@ -109,8 +107,8 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage4"
-        :page-sizes="[10, 11, 12, 13]"
-        :page-size="11"
+        :page-sizes="[10, 20, 30, 40]"
+        :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
         class="mt-30 h-38"
         :total='total'>
@@ -184,8 +182,8 @@ export default {
         startTime: '',
         endTime: '',
         caseNumber: '',
-        pageSize: '',
-        currentPage: ''
+        pageSize: 10,
+        currentPage: 1
       },
       tableData: [],
       currentPage: 1,
@@ -233,26 +231,27 @@ export default {
       })
     },
     handleSizeChange (val) {
-      this.form.pageSize = val
-      console.log(`每页 ${val} 条`)
-      this.search()
+      this.form.pageSize = parseInt(val)
+      if (this.tableData.length>0) {
+        this.search()
+      }
     },
     handleCurrentChange (val) {
-      this.form.currentPage = val
-      console.log(`当前页: ${val}`)
-      this.search()
+      this.form.currentPage = parseInt(val)
+      if (this.tableData.length>0) {
+        this.search()
+      }
     }
   }
 }
 </script>
 <style lang="scss">
   .record{
+    width: 100%;
     height: 100%;
-    padding:0 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    padding: 20px 0;
     box-sizing: border-box;
     .sel-list{
       display: flex;
@@ -275,7 +274,8 @@ export default {
       background-color: #D9E0E7;
       line-height:40px;
       color:#606266;
-      margin-left:20px;
+      // margin-left:20px;
+      padding-left:20px;
       span{
         width:4px !important;
         height:20px;

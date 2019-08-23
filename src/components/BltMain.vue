@@ -11,6 +11,11 @@ export default {
     return {
 
     }
+  },
+  computed: {
+    isCollapse () {
+      return this.$store.state.isCollapse
+    }
   }
 }
 </script>
@@ -27,6 +32,7 @@ export default {
       height: 100%;
       overflow: auto;
       background: #999;
+      padding: 20px 0;
     }
   }
 </style>
