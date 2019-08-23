@@ -115,21 +115,19 @@
       </el-pagination>
     </div>
     <div class="v-mask" v-if='dialogVisible'></div>
-    <el-dialog
-      title="详细信息"
-      :visible.sync="dialogVisible"
-      width="40%"
-      height='600px'
-      style="z-index:333"
-      :before-close="handleClose">
-      <div class="table-Info">
-        <div v-for='(item, idx) in tableDataInfo' :key='idx'><span>{{idx}}:</span>{{item}}</div>
+    <div class="table-Info" v-show='dialogVisible'>
+      <div class="tab-banner">
+        <div>
+          <span>工单</span>
+          <span>视频取证</span>
+          <span>快速取证</span>
+          <span>电子查勘单</span>
+        </div>
+        <div>
+          <span>关闭</span>
+        </div>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -247,6 +245,9 @@ export default {
 </script>
 <style lang="scss">
   .record{
+    position: relative;
+    top:0;
+    left:0;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
@@ -296,13 +297,50 @@ export default {
     }
   }
   .table-Info{
-    height:400px;
+    width: 87%;
+    height:700px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background-color: #fff;
+    z-index:199;
+    padding: 20px;
     overflow: scroll;
-    div{
-      margin-bottom: 10px;
-      span{
-        margin-right: 20px;
+    box-sizing: border-box;
+    .tab-banner{ // 蓝色横条
+      width:100%;
+      height:48px;
+      background:rgba(141,155,185,1);
+      font-size:16px;
+      font-weight:400;
+      color:#FFF;
+      display: flex;
+      div{
+        flex:1;
       }
+      div:first-child{
+        display: flex;
+        span{
+          display: inline-block;
+          width:101px;
+          height:100%;
+          text-align: center;
+          line-height: 48px;
+        }
+        span:hover,span:active{
+          background-color: #4B608D;
+        }
+      }
+      div:last-child{
+        text-align: right;
+        line-height: 48px;
+        padding-right:20px;
+      }
+    }
+    .tab-input{
+      display: flex;
+      
     }
   }
 </style>
