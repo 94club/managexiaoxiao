@@ -1,17 +1,17 @@
 <template>
   <div class="blt-main">
-    <blt-header></blt-header>
+    <!-- <blt-header></blt-header> -->
     <div class="blt-main-content">
       <router-view />
     </div>
   </div>
 </template>
 <script>
-import BltHeader from './BltHeader'
+// import BltHeader from './BltHeader'
 export default {
-  components: {
-    BltHeader
-  }
+  // components: {
+  //   BltHeader
+  // }
 }
 </script>
 

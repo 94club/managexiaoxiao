@@ -4,7 +4,8 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
 import './assets/theme/index.css'
-
+import Api from './utils/axios'
+Vue.prototype.$axios = Api
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

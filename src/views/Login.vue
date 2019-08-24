@@ -14,7 +14,7 @@
         <div class="md-input">
           <div class="input-top">一路行国寿准行管理平台</div>
           <div class="login-item">
-            <el-input placeholder="请输入帐号" v-model="userInfo.jobNumber" clearable  @keyup.enter.native="login"></el-input>
+            <el-input placeholder="请输入帐号" v-model="userInfo.username" clearable  @keyup.enter.native="login"></el-input>
           </div>
           <div class="login-item">
             <el-input placeholder="请输入密码" v-model="userInfo.pwd" show-password  @keyup.enter.native="login"></el-input>
@@ -46,7 +46,7 @@ export default {
   data () {
     return {
       userInfo: {
-        jobNumber: '',
+        username: '',
         pwd: ''
       },
       remPwd: '',
@@ -70,7 +70,7 @@ export default {
       this.remPwd = !this.remPwd
     },
     login () {
-      if (!this.userInfo.jobNumber) {
+      if (!this.userInfo.username) {
         this.$message({
           message: '用户名不能为空',
           type: 'error'
@@ -85,6 +85,7 @@ export default {
         return
       }
       this.isLogin = true
+      this.$axios.post(constant.login, this.userInfo).then((res) => {})
       axios({
         url: constant.baseUrl + constant.login,
         data: qs.stringify(this.userInfo),

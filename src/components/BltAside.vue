@@ -2,7 +2,7 @@
   <div class="blt-aside">
     <el-row class="tac">
       <el-col>
-        <h5>国寿总控后台</h5>
+        <h5>cp系统临时后台</h5>
         <el-menu
           v-show="routerArr.length > 0"
           :defaultActive="defaultActive"
