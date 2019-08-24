@@ -31,7 +31,7 @@ import constant from '../utils/constant'
 export default {
   data () {
     return {
-      routerArr: constant.routerArr
+      routerArr: constant.routerArr,
     }
   },
   computed: {
@@ -40,6 +40,9 @@ export default {
     },
     defaultActive () {
       return this.$route.path.substr(1)
+    },
+    isCollapse () {
+      return this.$store.state.isCollapse
     }
   },
   mounted () {
@@ -59,6 +62,9 @@ export default {
     }
   },
   methods: {
+    changeZhan () {
+      this.$store.dispatch('updateIsCollapse', !this.isCollapse)
+    },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)
     },
@@ -70,11 +76,51 @@ export default {
 </script>
 <style lang="scss">
 .blt-aside {
+  position: relative;
   width: 200px;
-  background: #666;
-  overflow: auto;
+  height: 100%;
+  float: left;
+  overflow: scroll;
+  background:rgba(45,53,60,1);
+  transition: all .5s;
   .el-menu {
     border: none
   }
+}
+.hide{
+  background-color: transparent !important;
+  display: none;
+  transition: all .5s;
+}
+.is-zhankai{
+  position:absolute;
+  bottom:50px;
+  right:0;
+  width:40px;
+  height:30px;
+  // .left{
+  //   width:40px;
+  //   height:30px;
+  //   background:rgba(74,74,82,1);
+  //   border-radius:15px 0px 0px 15px;
+  // }
+  .right{
+    width:40px;
+    height:30px;
+    background:rgba(26,33,39,1);
+    border-radius:15px 0px 0px 15px;
+    color:#fff;
+    line-height: 30px;
+    font-size:16px;
+    text-align: center;
+  }
+}
+.top-0{
+  bottom:50px;
+  left:0;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
 }
 </style>

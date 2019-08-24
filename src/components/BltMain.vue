@@ -17,17 +17,17 @@ export default {
 
 <style lang="scss">
   .blt-main {
-    flex: 1;
+    display: inline-block;
     display: flex;
     flex-direction: column;
-    &-header {
-      height: 60px;
-      background: #eee;
-    }
+    height: 100%;
+    background-color: #d9e0e7;
     &-content {
       flex:1;
+      height: 100%;
       overflow: auto;
-      background: #999
+      background: #999;
+      padding: 20px 0;
     }
   }
 </style>
