@@ -118,15 +118,65 @@
     <div class="table-Info" v-show='dialogVisible'>
       <div class="tab-banner">
         <div>
-          <span>工单</span>
-          <span>视频取证</span>
-          <span>快速取证</span>
-          <span>电子查勘单</span>
+          <span @click="infoShow = true">工单</span>
+          <span @click="infoShow = false">视频列表</span>
+          <!-- <span>快速取证</span> -->
+          <!-- <span>电子查勘单</span> -->
         </div>
         <div>
-          <span>关闭</span>
+          <span @click="dialogVisible = false">关闭</span>
         </div>
       </div>
+      <div class="info">
+        <span class="item">案件号:{{tableDataInfo.caseNumber}}</span>
+      </div>
+      <template v-if="infoShow">
+        <div class="tab-banner">
+          <div>
+            <span>出险信息</span>
+          </div>
+        </div>
+        <div class="info">
+          <span class="item">报案人:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">电话:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">出险日期:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">出险时间:{{tableDataInfo.caseNumber}}</span>
+        </div>
+        <p>出险地点</p>
+        <p>出险经过</p>
+        <p>事故摘要</p>
+        <div class="tab-banner">
+          <div>
+            <span>标的车信息</span>
+          </div>
+        </div>
+        <div class="info">
+          <span class="item">标的车牌:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">驾驶员:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">电话:{{tableDataInfo.caseNumber}}</span>
+        </div>
+        <div class="info">
+          <span class="item">事故责任:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">送修专员:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">电话:{{tableDataInfo.caseNumber}}</span>
+        </div>
+          <p>车损情况</p>
+          <p>送修机构</p>
+        <div class="tab-banner">
+          <div>
+            <span>查勘信息</span>
+          </div>
+        </div>
+        <div class="info">
+          <span class="item">事故责任:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">送修专员:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">电话:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">送修专员:{{tableDataInfo.caseNumber}}</span>
+          <span class="item">电话:{{tableDataInfo.caseNumber}}</span>
+        </div>
+        <p>查勘结论</p>
+      </template>
+      <template v-else></template>
     </div>
   </div>
 </template>
@@ -187,7 +237,8 @@ export default {
       currentPage: 1,
       total: 0,
       tableDataInfo: '', // 详细信息
-      multipleSelection: [] // 选择
+      multipleSelection: [], // 选择
+      infoShow: true
     }
   },
   methods: {
@@ -270,7 +321,7 @@ export default {
       margin-right:0;
     }
     .title{
-      width: 100%;
+      width: calc(100% - 20px);
       height:40px;
       background-color: #D9E0E7;
       line-height:40px;
@@ -297,8 +348,8 @@ export default {
     }
   }
   .table-Info{
-    width: 87%;
-    height:700px;
+    width: 100%;
+    height:600px;
     position: absolute;
     top:50%;
     left:50%;
@@ -308,6 +359,15 @@ export default {
     padding: 20px;
     overflow: scroll;
     box-sizing: border-box;
+    .info {
+      width: calc(100% - 20px);
+      padding: 10px;
+      display: flex;
+      margin: 20px 0;
+      .item {
+        flex: 1;
+      }
+    }
     .tab-banner{ // 蓝色横条
       width:100%;
       height:48px;
@@ -318,6 +378,7 @@ export default {
       display: flex;
       div{
         flex:1;
+        cursor: pointer;
       }
       div:first-child{
         display: flex;
