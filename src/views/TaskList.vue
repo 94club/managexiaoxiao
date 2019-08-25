@@ -1,5 +1,5 @@
 <template>
-  <div class="record">
+  <div>
     <el-button type="primary" @click="logout">退出</el-button>
     <el-button type="primary" @click="checkYuan">查看心愿</el-button>
     <el-button type="primary" @click="checkNotice">查看公告</el-button>
@@ -17,7 +17,18 @@ export default {
     }
   },
   methods: {
-    logout () {},
+    logout () {
+      this.$axios.post(constant.logout).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '退出成功'
+        })
+        this.$store.dispatch('userInfo', '')
+        this.$router.replace({
+          path: '/login'
+        })
+      })
+    },
     checkYuan () {},
     checkNotice () {},
     checkActivity () {},
@@ -134,7 +145,6 @@ export default {
     }
     .tab-input{
       display: flex;
-      
     }
   }
 </style>

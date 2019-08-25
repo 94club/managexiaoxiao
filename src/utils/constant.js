@@ -1,11 +1,3 @@
-
-let baseUrl
-if (process.env.NODE_ENV === 'development') {
-  baseUrl = ''
-} else {
-  // baseUrl = 'https://selfclaim.chinalife-p.com.cn'
-  baseUrl = 'https://' + location.hostname + '/selfClaim'
-}
 const routerArr = [
   {
     title: '统计中心', // sub-menu
@@ -31,8 +23,7 @@ const routerArr = [
   }
 ]
 export default {
-  baseUrl,
   routerArr,
-  login: '/interface/loginOrganizationUser',
-  queryCaseByWhere: '/interface/getCaseByWhere'
+  login: 'api/v1/adminLogin',
+  logout: 'admin/v1/adminLogout'
 }

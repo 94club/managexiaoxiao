@@ -19,11 +19,17 @@ export default {
     BltHeader
   },
   created () {
-    let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    let info = localStorage.getItem('userInfo')
+    let userInfo = ''
+    if (info) {
+      userInfo = JSON.parse(info)
+    }
     if (!userInfo) {
       this.$router.replace({
         path: '/login'
       })
+    } else {
+      this.$store.dispatch('updateUserInfo', userInfo)
     }
   }
 }

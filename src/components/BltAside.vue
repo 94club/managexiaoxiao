@@ -31,7 +31,7 @@ import constant from '../utils/constant'
 export default {
   data () {
     return {
-      routerArr: constant.routerArr,
+      routerArr: constant.routerArr
     }
   },
   computed: {

@@ -39,9 +39,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
 import constant from '../utils/constant'
-import qs from 'qs'
 export default {
   data () {
     return {
@@ -54,7 +52,11 @@ export default {
     }
   },
   mounted () {
-    let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    let info = localStorage.getItem('userInfo')
+    let userInfo = ''
+    if (info) {
+      userInfo = JSON.parse(info)
+    }
     let isRemeber = localStorage.getItem('isRemeber')
     if (isRemeber === 'true') {
       this.remPwd = true
@@ -68,6 +70,11 @@ export default {
   methods: {
     rempwdCheck () {
       this.remPwd = !this.remPwd
+    },
+    getUserInfo () {
+      this.$axios.get(constant.userInfo).then((res) => {
+        this.$store.dispatch('updateUserInfo', res)
+      })
     },
     login () {
       if (!this.userInfo.username) {
@@ -85,32 +92,25 @@ export default {
         return
       }
       this.isLogin = true
-      this.$axios.post(constant.login, this.userInfo).then((res) => {})
-      axios({
-        url: constant.baseUrl + constant.login,
-        data: qs.stringify(this.userInfo),
-        method: 'post'
-      }).then((res) => {
-        if (res.data.code === '500') {
-          this.$message({
-            type: 'warning',
-            message: '账号或密码错误，请联系管理员'
-          })
+      setTimeout(() => {
+        this.isLogin = false
+      }, 1000)
+      this.$axios.post(constant.login, this.userInfo).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '登录成功'
+        })
+        if (res.userInfo) {
+          this.$store.dispatch('updateUserInfo', this.userInfo)
+          localStorage.setItem('userInfo', JSON.stringify(this.userInfo))
+        } else {
+          this.getUserInfo()
         }
-        if (res.data.code === '200') {
-          this.$message({
-            type: 'success',
-            message: '登录成功'
-          })
-          let temp = res.data.data
-          temp.pwd = this.userInfo.pwd
-          localStorage.setItem('userInfo', JSON.stringify(temp))
-          localStorage.setItem('isRemeber', this.remPwd)
-          this.$store.dispatch('updateUserInfo', temp)
-          this.$router.replace({
-            path: '/taskList'
-          })
-        }
+        localStorage.setItem('isRemeber', this.remPwd)
+        localStorage.setItem('token', res.token)
+        this.$router.replace({
+          path: '/taskList'
+        })
       })
     }
   }
