@@ -19,10 +19,16 @@ export default {
     BltHeader
   },
   created () {
-    let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    if (!userInfo) {
-      this.$router.replace({
-        path: '/login'
+    let loadingInstance = this.$loading()
+    setTimeout(() => {
+      loadingInstance.close()
+    }, 2000)
+    this.getUserInfo()
+  },
+  methods: {
+    getUserInfo () {
+      this.$axios.get(this.$constant.getUserInfo).then((res) => {
+        this.$store.dispatch('updateUserInfo', res)
       })
     }
   }

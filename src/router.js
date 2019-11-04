@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import workOrderList from './views/workOrderList.vue'
-import checkList from './views/checkList.vue'
-import TaskList from './views/TaskList.vue'
+import DaojuList from './views/DaojuList.vue'
+import UserList from './views/UserList.vue'
+import NoticeList from './views/NoticeList.vue'
+import YuanList from './views/YuanList.vue'
+import RecordList from './views/RecordList.vue'
+import Dashboard from './views/Dashboard.vue'
 import Login from './views/Login.vue'
 import NotFound from './views/404.vue'
 
@@ -22,16 +25,28 @@ const router = new Router({
       component: Home,
       children: [
         {
-          path: 'taskList',
-          component: TaskList
+          path: 'dashboard',
+          component: Dashboard
         },
         {
-          path: 'workOrderList',
-          component: workOrderList
+          path: 'daojuList',
+          component: DaojuList
         },
         {
-          path: 'checkList',
-          component: checkList
+          path: 'userList',
+          component: UserList
+        },
+        {
+          path: 'yuanList',
+          component: YuanList
+        },
+        {
+          path: 'noticeList',
+          component: NoticeList
+        },
+        {
+          path: 'recordList',
+          component: RecordList
         }
       ]
     },

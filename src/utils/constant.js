@@ -1,38 +1,12 @@
 
-let baseUrl
-if (process.env.NODE_ENV === 'development') {
-  baseUrl = ''
-} else {
-  // baseUrl = 'https://selfclaim.chinalife-p.com.cn'
-  baseUrl = 'https://' + location.hostname + '/selfClaim'
-}
-const routerArr = [
-  {
-    title: '统计中心', // sub-menu
-    index: '1',
-    icon: 'Statis',
-    menuItems: [
-      {
-        title: '任务列表', // menu-item
-        icon: 'dian',
-        index: 'taskList'
-      },
-      {
-        title: '工单统计',
-        icon: 'dian',
-        index: 'workOrderList'
-      },
-      {
-        title: '查勘统计',
-        icon: 'dian',
-        index: 'checkList'
-      }
-    ]
-  }
-]
 export default {
-  baseUrl,
-  routerArr,
-  login: '/interface/loginOrganizationUser',
-  queryCaseByWhere: '/interface/getCaseByWhere'
+  login: 'unauth/v1/adminLogin',
+  getUserInfo: 'admin/v1/getUserInfo',
+  logout: 'admin/v1/adminLogout',
+  updateYuan: 'admin/v1/updateYuan',
+  getYuan: 'admin/v1/getYuan',
+  addDaoju: 'admin/v1/addDaoju',
+  getDaoju: 'admin/v1/getDaoju',
+  addAcitivity: 'admin/v1/addAcitivity',
+  getAcitivity: 'admin/v1/getAcitivity'
 }

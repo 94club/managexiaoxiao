@@ -1,23 +1,14 @@
 <template>
   <div class="login-box">
-    <div class="login-top">
-      <img src="../../public/images/logo.png" alt class="logo">
-    </div>
     <div class="login-middle">
       <div class="md-content">
-        <div class="md-china">
-          <img src="../../public/images/china.png" alt>
-        </div>
-        <div class="md-bigimg">
-          <img src="../../public/images/bigImage.png" alt>
-        </div>
         <div class="md-input">
           <div class="input-top">一路行国寿准行管理平台</div>
           <div class="login-item">
-            <el-input placeholder="请输入帐号" v-model="userInfo.jobNumber" clearable  @keyup.enter.native="login"></el-input>
+            <el-input placeholder="请输入帐号" v-model.trim="userInfo.username" clearable  @keyup.enter.native="login"></el-input>
           </div>
           <div class="login-item">
-            <el-input placeholder="请输入密码" v-model="userInfo.pwd" show-password  @keyup.enter.native="login"></el-input>
+            <el-input placeholder="请输入密码" v-model.trim="userInfo.pwd" show-password  @keyup.enter.native="login"></el-input>
           </div>
           <div class="rem-pwd" @click="rempwdCheck">
             <div class="blt-checkbox iconfont" :class="remPwd?'icon-true':''" ></div>记住密码
@@ -27,26 +18,16 @@
       </div>
     </div>
     <div class="login-bottom">
-      <p>版权所有&copy;2019中国人寿保险（集团）公司.</p>
-      <p>Copyright &copy; 2019 China Life Insurance(Group) Company. All rights reserved.</p>
-      <p>京ICP备05024145号 京公网安备110401500015号</p>
-      <div class="bt-img">
-        <img src="../../public/images/bottom2.png" alt>
-        <img src="../../public/images/bottom1.png" alt>
-        <img src="../../public/images/bottom3.png" alt>
-      </div>
+      <p>版权所有&copy;alistar(feng--zao)</p>
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios'
-import constant from '../utils/constant'
-import qs from 'qs'
 export default {
   data () {
     return {
       userInfo: {
-        jobNumber: '',
+        username: '',
         pwd: ''
       },
       remPwd: '',
@@ -54,7 +35,10 @@ export default {
     }
   },
   mounted () {
-    let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    let userInfo
+    if (localStorage.getItem('userInfo')) {
+      userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    }
     let isRemeber = localStorage.getItem('isRemeber')
     if (isRemeber === 'true') {
       this.remPwd = true
@@ -70,7 +54,7 @@ export default {
       this.remPwd = !this.remPwd
     },
     login () {
-      if (!this.userInfo.jobNumber) {
+      if (!this.userInfo.username) {
         this.$message({
           message: '用户名不能为空',
           type: 'error'
@@ -85,31 +69,24 @@ export default {
         return
       }
       this.isLogin = true
-      axios({
-        url: constant.baseUrl + constant.login,
-        data: qs.stringify(this.userInfo),
-        method: 'post'
-      }).then((res) => {
-        if (res.data.code === '500') {
-          this.$message({
-            type: 'warning',
-            message: '账号或密码错误，请联系管理员'
-          })
+      setTimeout(() => {
+        this.isLogin = false
+      }, 2000)
+      this.$axios.post(this.$constant.login, this.userInfo).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '登录成功'
+        })
+        localStorage.setItem('isRemeber', this.remPwd)
+        if (this.remPwd) {
+          localStorage.setItem('userInfo', JSON.stringify(this.userInfo))
+        } else {
+          localStorage.setItem('userInfo', '')
         }
-        if (res.data.code === '200') {
-          this.$message({
-            type: 'success',
-            message: '登录成功'
-          })
-          let temp = res.data.data
-          temp.pwd = this.userInfo.pwd
-          localStorage.setItem('userInfo', JSON.stringify(temp))
-          localStorage.setItem('isRemeber', this.remPwd)
-          this.$store.dispatch('updateUserInfo', temp)
-          this.$router.replace({
-            path: '/taskList'
-          })
-        }
+        localStorage.setItem('token', res.token)
+        this.$router.replace({
+          path: '/dashboard'
+        })
       })
     }
   }
@@ -130,7 +107,7 @@ export default {
     }
   }
   .login-middle {
-    height: 600px;
+    height: 540px;
     background: linear-gradient(
       90deg,
       rgba(14, 110, 83, 1),
@@ -155,8 +132,9 @@ export default {
       }
       .md-input {
         position: absolute;
+        transform: translateX(-50%);
         bottom: 90px;
-        left: 758px;
+        left: 50%;
         width: 420px;
         height: 420px;
         background: #fff;
@@ -235,35 +213,6 @@ export default {
     line-height: 18px;
     background-color: #019858;
     font-size: 14px !important;
-  }
-}
-@media screen and (max-width: 1366px) {
-  .login-box {
-    .login-middle {
-      height: 420px;
-      .md-content {
-        .md-china {
-          img {
-            height: 200px;
-          }
-        }
-        .md-bigimg {
-          top: 18px;
-          img {
-            height: 400px;
-          }
-        }
-        .md-input {
-          width: 380px;
-          height: 380px;
-          left: 738px;
-          bottom: 20px;
-        }
-      }
-    }
-    .login-bottom {
-      margin-top: 30px;
-    }
   }
 }
 </style>

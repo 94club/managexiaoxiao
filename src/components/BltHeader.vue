@@ -31,16 +31,15 @@ export default {
       this.isWork = !this.isWork
     },
     logout () {
-      // axios({
-      //   url: constant.baseUrl + constant.queryCaseByWhere,
-      //   data: qs.stringify(this.form),
-      //   method: 'post'
-      // }).then((res) => {
-      //   if (res === 0) {
-      //     this.$router.replace({ path: '/login' })
-      //     this.$store.dispatch('updateUserInfo', '')
-      //   }
-      // })
+      this.$axios.post(this.$constant.logout).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '退出成功'
+        })
+        this.$router.replace({
+          path: '/login'
+        })
+      })
     }
   }
 }
