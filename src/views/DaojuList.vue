@@ -28,6 +28,7 @@
       </div>
       <div>
         <el-button @click="search" type='primary' class="h-38">查询</el-button>
+        <el-button @click="add" type='primary' class="h-38">新增</el-button>
       </div>
     </div>
     <div class="list-con">
@@ -70,7 +71,7 @@
        <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
+        :current-page="form.pageNo"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
@@ -78,6 +79,20 @@
         :total="tableData.length">
       </el-pagination>
     </div>
+    <el-dialog title="增加道具" :visible.sync="addShow">
+      <el-form :model="ruleForm">
+        <el-form-item label="描述">
+        <el-input type="text" v-model="ruleForm.des" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="购买金额">
+        <el-input type="number" v-model="ruleForm.money" autocomplete="off"></el-input>
+      </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="resetForm">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -113,26 +128,62 @@ export default {
         }]
       },
       timeValue: '',
-      options: [{
+      options: [
+        {
         value: 2,
         label: '是'
-      }, {
-        value: 1,
-        label: '否'
-      }],
+        }, {
+          value: 1,
+          label: '否'
+        }
+      ],
       form: {
         isUsed: '',
         startTime: '',
         endTime: '',
         pageSize: 10,
-        currentPage: 1
+        pageNo: 1
       },
       tableData: [],
-      currentPage: 1,
-      tableLoading: false
+      tableLoading: false,
+      ruleForm: {},
+      addShow: false
     }
   },
+  created () {
+    this.getDaojuList()
+  },
   methods: {
+    submitForm () {
+      if (!this.ruleForm.des) {
+        this.$message({
+          type: 'error',
+          message: '描述不能为空'
+        })
+        return
+      }
+      if (parseInt(this.ruleForm.money) < 0) {
+        this.$message({
+          type: 'error',
+          message: '金额必须大于0'
+        })
+        return
+      }
+      this.$axios.post(this.$constant.addDaoju, this.ruleForm).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '添加成功'
+        })
+        this.resetForm()
+      }).catch((err) => {})
+    },
+    resetForm () {
+      this.ruleForm = {}
+      this.addShow = false
+    },
+    add () {
+      this.addShow = true
+    },
     search () {
       this.tableLoading = true
       setTimeout(() => {
@@ -142,6 +193,7 @@ export default {
         this.form.startTime = this.timeValue[0]
         this.form.endTime = this.timeValue[1]
       }
+      this.getDaojuList()
     },
     handleSizeChange (val) {
       this.form.pageSize = parseInt(val)
@@ -150,10 +202,15 @@ export default {
       }
     },
     handleCurrentChange (val) {
-      this.form.currentPage = parseInt(val)
+      this.form.pageNo = parseInt(val)
       if (this.tableData.length > 0) {
         this.search()
       }
+    },
+    getDaojuList () {
+      this.$axios.get(this.$constant.getDaoju, {params: this.form}).then((res) => {
+        this.tableData = res
+      }).catch((err) => {})
     }
   }
 }
