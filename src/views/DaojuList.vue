@@ -130,9 +130,10 @@ export default {
       timeValue: '',
       options: [
         {
-        value: 2,
-        label: '是'
-        }, {
+          value: 2,
+          label: '是'
+        },
+        {
           value: 1,
           label: '否'
         }
@@ -175,7 +176,10 @@ export default {
           message: '添加成功'
         })
         this.resetForm()
-      }).catch((err) => {})
+        this.getDaojuList()
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     resetForm () {
       this.ruleForm = {}
@@ -208,9 +212,11 @@ export default {
       }
     },
     getDaojuList () {
-      this.$axios.get(this.$constant.getDaoju, {params: this.form}).then((res) => {
+      this.$axios.get(this.$constant.getDaoju, { params: this.form }).then((res) => {
         this.tableData = res
-      }).catch((err) => {})
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 }

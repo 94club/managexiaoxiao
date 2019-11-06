@@ -16,8 +16,8 @@
         </el-date-picker>
       </div>
       <div>
-         是否使用
-       <el-select v-model="form.isUsed" placeholder="请选择">
+         状态
+       <el-select v-model="form.status" placeholder="请选择">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -28,9 +28,9 @@
       </div>
       <div>
         <el-button @click="search" type='primary' class="h-38">查询</el-button>
+        <el-button @click="add" type='primary' class="h-38">增加</el-button>
       </div>
     </div>
-
     <div class="list-con">
       <div class="list-table">
         <el-table
@@ -40,13 +40,13 @@
             border
             style="width: 100%;">
           <el-table-column
-            prop="ownerName"
-            label="拥有者"
+            prop="createdBy"
+            label="创建者"
             width="240">
           </el-table-column>
           <el-table-column
-            prop="money"
-            label="所需愿币"
+            prop="amount"
+            label="奖励愿币"
             width="180">
           </el-table-column>
           <el-table-column
@@ -54,12 +54,8 @@
             label="描述">
           </el-table-column>
           <el-table-column
-            prop="isUsed"
-            label="是否使用">
-          </el-table-column>
-           <el-table-column
-            prop="usedTime"
-            label="使用时间">
+            prop="status"
+            label="状态">
           </el-table-column>
             <el-table-column
             prop="createTime"
@@ -71,7 +67,7 @@
        <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
+        :current-page="form.pageNo"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
@@ -79,6 +75,20 @@
         :total="tableData.length">
       </el-pagination>
     </div>
+    <el-dialog title="增加系统任务" :visible.sync="addShow">
+      <el-form :model="ruleForm">
+        <el-form-item label="描述">
+          <el-input type="text" v-model="ruleForm.des" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="奖励金额">
+          <el-input type="number" v-model="ruleForm.amount" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="resetForm">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -115,23 +125,35 @@ export default {
       },
       timeValue: '',
       options: [{
+        value: 3,
+        label: '完成'
+      }, {
         value: 2,
-        label: '是'
+        label: '待审核'
       }, {
         value: 1,
-        label: '否'
+        label: '进行中'
       }],
       form: {
-        isUsed: '',
+        status: '',
         startTime: '',
         endTime: '',
         pageSize: 10,
-        currentPage: 1
+        pageNo: 1
       },
+      ruleForm: {},
       tableData: [],
-      currentPage: 1,
-      tableLoading: false
+      tableLoading: false,
+      addShow: false
     }
+  },
+  computed: {
+    userInfo () {
+      return this.$store.state.userInfo
+    }
+  },
+  created () {
+    this.getYuanList()
   },
   methods: {
     search () {
@@ -143,6 +165,48 @@ export default {
         this.form.startTime = this.timeValue[0]
         this.form.endTime = this.timeValue[1]
       }
+    },
+    submitForm () {
+      if (!this.ruleForm.des) {
+        this.$message({
+          type: 'error',
+          message: '描述不能为空'
+        })
+        return
+      }
+      if (parseInt(this.ruleForm.amount) < 0) {
+        this.$message({
+          type: 'error',
+          message: '金额必须大于0'
+        })
+        return
+      }
+      this.ruleForm.type = 1
+      this.ruleForm.createdBy = this.userInfo.username
+      this.$axios.post(this.$constant.addYuan, this.ruleForm).then((res) => {
+        this.$message({
+          type: 'success',
+          message: '添加成功'
+        })
+        this.resetForm()
+        this.getYuanList()
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    getYuanList () {
+      this.$axios.get(this.$constant.getYuan, { params: this.form }).then((res) => {
+        this.tableData = res
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    resetForm () {
+      this.ruleForm = {}
+      this.addShow = false
+    },
+    add () {
+      this.addShow = true
     },
     handleSizeChange (val) {
       this.form.pageSize = parseInt(val)

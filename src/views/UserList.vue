@@ -16,8 +16,8 @@
         </el-date-picker>
       </div>
       <div>
-         是否使用
-       <el-select v-model="form.isUsed" placeholder="请选择">
+         是否绑定
+       <el-select v-model="form.isBind" placeholder="请选择">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -39,26 +39,26 @@
             border
             style="width: 100%;">
           <el-table-column
-            prop="ownerName"
-            label="拥有者"
+            prop="nickName"
+            label="昵称"
             width="240">
           </el-table-column>
           <el-table-column
-            prop="money"
-            label="所需愿币"
+            prop="cpName"
+            label="绑定对象"
             width="180">
           </el-table-column>
           <el-table-column
-            prop="des"
-            label="描述">
+            prop="cpMoney"
+            label="心愿币">
           </el-table-column>
           <el-table-column
-            prop="isUsed"
-            label="是否使用">
+            prop="activeNumber"
+            label="活跃指数">
           </el-table-column>
            <el-table-column
-            prop="usedTime"
-            label="使用时间">
+            prop="lastSignTime"
+            label="上一次登录时间">
           </el-table-column>
             <el-table-column
             prop="createTime"
@@ -70,7 +70,7 @@
        <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
+        :current-page="form.pageNo"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
@@ -113,24 +113,31 @@ export default {
         }]
       },
       timeValue: '',
-      options: [{
-        value: 2,
-        label: '是'
-      }, {
-        value: 1,
-        label: '否'
-      }],
+      options: [
+        {
+          value: 2,
+          label: '绑定'
+        },
+        {
+          value: 1,
+          label: '未绑定'
+        }
+      ],
       form: {
-        isUsed: '',
         startTime: '',
         endTime: '',
         pageSize: 10,
-        currentPage: 1
+        pageNo: 1,
+        isBind: ''
       },
       tableData: [],
-      currentPage: 1,
-      tableLoading: false
+      tableLoading: false,
+      ruleForm: {},
+      addShow: false
     }
+  },
+  created () {
+    this.getuserList()
   },
   methods: {
     search () {
@@ -142,6 +149,7 @@ export default {
         this.form.startTime = this.timeValue[0]
         this.form.endTime = this.timeValue[1]
       }
+      this.getuserList()
     },
     handleSizeChange (val) {
       this.form.pageSize = parseInt(val)
@@ -150,10 +158,17 @@ export default {
       }
     },
     handleCurrentChange (val) {
-      this.form.currentPage = parseInt(val)
+      this.form.pageNo = parseInt(val)
       if (this.tableData.length > 0) {
         this.search()
       }
+    },
+    getuserList () {
+      this.$axios.get(this.$constant.getUser, { params: this.form }).then((res) => {
+        this.tableData = res
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 }
