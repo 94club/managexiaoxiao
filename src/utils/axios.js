@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
   axiosIns.defaults.baseURL = 'http://localhost:8002'
   // axiosIns.defaults.baseURL = 'https://xiaoai.jiaxiu.club'
 } else {
-  axiosIns.defaults.baseURL = location.protocol + '//' + location.hostname
+  axiosIns.defaults.baseURL = 'https://xiaoai.jiaxiu.club'
 }
 
 // 添加请求拦截器
